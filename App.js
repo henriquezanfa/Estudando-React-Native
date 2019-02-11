@@ -11,12 +11,39 @@ export default class Hello extends Component {
     };
   }
 
+  useJso() {
+
+  }
+
   func() {
-    if(this.state.newText.trim() == '') {
-      this.setState({text: ''});
-      return;
-    }
-    this.setState({text: 'EAE ' + this.state.newText});
+    const fetchConfig = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    };
+
+    fetch('https://us-central1-push-notification-7e387.cloudfunctions.net/miguel?nome=' + encodeURIComponent(this.state.newText), fetchConfig)
+    .then((response) => {
+      if(response.status === 200) { 
+        Alert.alert(response.json());
+        return response;
+      } else {
+        throw new Error("Something wrong");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+
+    
+    
+    // if(this.state.newText.trim() == '') {
+    //   this.setState({text: ''});
+    //   return;
+    // }
+    // this.setState({text: 'EAE ' + this.state.newText});
   }
 
   render() {
